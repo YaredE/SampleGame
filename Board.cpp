@@ -7,14 +7,45 @@ using namespace std;
 
 void printParts(std::vector <char> const &a) {
 	std::cout << "The ship parts are : ";
-
 	for (int inx = 0; inx < a.size(); inx++)
 		std::cout << a.at(inx) << ' ';
 }
 
-
 Board::Board()
 {
+}
+
+bool Board::isAShipParkedNext(int row, int col) {
+	int nextRow = row + 1;
+	int nextCol = col + 1;
+	bool hasShipParkedToTheRight = false;
+	if (nextRow < board.size()) {
+		CELL currentCell = board.at(nextRow).at(col);
+		hasShipParkedToTheRight = isShipOrPartOfShip(currentCell);
+	}
+	bool hasShipParkedBelow = false;
+	if (nextCol < board.at(row).size()) {
+		CELL currentCell = board.at(row).at(nextCol);
+		hasShipParkedBelow = isShipOrPartOfShip(currentCell);
+	}
+	return hasShipParkedToTheRight && hasShipParkedBelow;
+}
+
+bool Board::isValidBoard() {
+	//Board is valid if no two ships are next to each other.
+	for (int row = 0; row < board.size(); row++) {
+		for (int col = 0; col < board.at(0).size(); col++) {
+			CELL currentCell = board.at(row).at(col);
+			if (!isShipOrPartOfShip(currentCell)) {
+				continue;
+			}
+			bool result = isAShipParkedNext(row, col);
+			if (result) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 Board::Board(std::vector<std::vector<char>> & gBoard)
@@ -37,6 +68,9 @@ bool Board::isShipOrPartOfShip(CELL & cell) {
 
 int Board::getShipCountOnBoard() {
 	int shipCount = 0;
+	if (!isValidBoard()) {
+		return shipCount;
+	}
 	for (int row = 0; row < board.size(); row++)
 	{
 		for (int col = 0; col < board.at(row).size(); col++) {
@@ -49,7 +83,6 @@ int Board::getShipCountOnBoard() {
 			if (isValidDown) {
 				shipCount++;
 			}
-			printParts(shipParts);
 			shipParts.clear();
 			int isValidRight = isCellValid(currentCell, RIGHT, row, col, shipParts);
 			if (isValidRight) {

@@ -27,6 +27,7 @@ private:
 	std::vector<std::vector<CELL>> board;
 	bool isCellValid(CELL & currentCell, TRAVERSE_DIRECTION direction, int row, int column, std::vector<char> & parts);
 	bool isShipOrPartOfShip(CELL & cell);
+	bool isAShipParkedNext(int row, int col);
 
 };
 

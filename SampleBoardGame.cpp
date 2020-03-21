@@ -8,6 +8,26 @@
 #include <iostream>
 #include <vector> 
 
+
+static void printBoardDetails(Board & boardToPrint ) {
+
+	std::cout << "====================================================================================== \n";
+	std::cout <<  " The Given board looks like  \n";
+	boardToPrint.print();
+	std::cout << "   \n";
+	std::string boardValidText;
+	if (boardToPrint.isValidBoard()) {
+		boardValidText = "Valid";
+	}
+	else {
+		boardValidText = "invalid";
+	}
+	std::cout << "Checking if the board is valid  : " << boardValidText.c_str() << "  \n";
+	std::cout << "Number of ships in the board is : " << boardToPrint.getShipCountOnBoard() << "\n";
+	std::cout << "====================================================================================== \n";
+}
+
+
 int main()
 {
 	char DOT = '.';
@@ -25,18 +45,21 @@ int main()
 		boardData.push_back(rowData);
 	}
 	Board testBoard(boardData);
-	testBoard.print();
+	printBoardDetails(testBoard);
 
-	std::cout <<  "We have got : " << testBoard.getShipCountOnBoard() << " ships \n";
+	//Let us check for invalid board.
+	char invalid_board[4][4] = { { DOT,PART, PART, PART},{ DOT,PART, DOT, DOT}, { DOT,DOT, DOT, PART} };
+	std::vector<std::vector<char>> invalid_boardData;
+
+	for (int r = 0; r < TEST_SIZE; r++) {
+		std::vector<char> rowData;
+		for (int co = 0; co < TEST_SIZE; co++) {
+			rowData.push_back(invalid_board[r][co]);
+		}
+		invalid_boardData.push_back(rowData);
+	}
+
+	Board invalid_testBoard(invalid_boardData);
+	printBoardDetails(invalid_testBoard);
+
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
