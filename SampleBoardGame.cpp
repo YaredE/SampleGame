@@ -1,15 +1,33 @@
 // SampleBoardGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// This is some change.
 
 #include "pch.h"
 
 #include "Board.h"
 
 #include <iostream>
-#include <vector> 
+#include <vector>
 
 
 static void printBoardDetails(Board & boardToPrint ) {
+
+	std::cout << "====================================================================================== \n";
+	std::cout <<  " The Given board looks like  \n";
+	boardToPrint.print();
+	std::cout << "   \n";
+	std::string boardValidText;
+	if (boardToPrint.isValidBoard()) {
+		boardValidText = "Valid";
+	}
+	else {
+		boardValidText = "invalid";
+	}
+	std::cout << "Checking if the board is valid  : " << boardValidText.c_str() << "  \n";
+	std::cout << "Number of ships in the board is : " << boardToPrint.getShipCountOnBoard() << "\n";
+	std::cout << "====================================================================================== \n";
+}
+
+static void printBoardDetailsForFun(Board & boardToPrint ) {
 
 	std::cout << "====================================================================================== \n";
 	std::cout <<  " The Given board looks like  \n";
@@ -36,7 +54,7 @@ int main()
 
 	char board[4][4] = { { DOT,PART, DOT, PART},{ DOT,PART, DOT, DOT}, { DOT,DOT, DOT, PART} };
 	std::vector<std::vector<char>> boardData;
-	
+
 	for (int r = 0;  r < TEST_SIZE; r++) {
 		std::vector<char> rowData;
 		for (int co = 0; co < TEST_SIZE; co++) {
